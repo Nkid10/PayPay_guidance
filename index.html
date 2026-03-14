@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAYPAY AO API - Documentação para Desenvolvedores</title>
+    <link rel="shortcut icon" href="assets/paypay_africa_logo.jfif" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <a href="index.html" class="logo">PAYPAY AO <span>API v1.0</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="#endpoints">Endpoints</a></li>
+                    <li><a href="#quick-start">Docs</a></li>
+                    <li><a href="https://portal.paypayafrica.com" target="_blank">Portal</a></li>
+                    <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-logo fade-in-up">
+                PAYPAY AO <span>API v1.0</span>
+            </div>
+            <h1 class="fade-in-up delay-1">Documentação da API<br>para Desenvolvedores</h1>
+            <p class="fade-in-up delay-2">Integre soluções de pagamento completas em sua aplicação com a API PAYPAY Angola</p>
+            <div class="hero-buttons fade-in-up delay-3">
+                <a href="#quick-start" class="btn btn-primary" id="start-now-btn">Começar Agora</a>
+                <a href="#endpoints" class="btn btn-outline" id="view-docs-btn">Ver Documentação Completa</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Steps Cards -->
+    <div class="steps-container">
+        <div class="step-card scale-in" onclick="openTutorial('tutorial-geracao')">
+            <div class="step-number">1</div>
+            <div class="step-icon">📝</div>
+            <h3>Gere suas chaves RSA</h3>
+            <p>Aprenda como gerar o par de chaves para autenticação segura</p>
+            <a href="#" class="step-link" onclick="event.stopPropagation(); openTutorial('tutorial-geracao')">Ver tutorial →</a>
+        </div>
+
+        <div class="step-card scale-in" onclick="openTutorial('tutorial-upload')">
+            <div class="step-number">2</div>
+            <div class="step-icon">🔧</div>
+            <h3>Configure no portal</h3>
+            <p>Faça upload da chave pública e configure sua integração</p>
+            <a href="#" class="step-link" onclick="event.stopPropagation(); openTutorial('tutorial-upload')">Ver tutorial →</a>
+        </div>
+
+        <div class="step-card scale-in" onclick="openTutorial('tutorial-testes')">
+            <div class="step-number">3</div>
+            <div class="step-icon">🚀</div>
+            <h3>Teste com exemplos</h3>
+            <p>Experimente os endpoints com nossos exemplos práticos</p>
+            <a href="#" class="step-link" onclick="event.stopPropagation(); openTutorial('tutorial-testes')">Ver tutorial →</a>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">Por que escolher PAYPAY API?</h2>
+            <p class="section-subtitle">Tudo que você precisa para aceitar pagamentos em Angola de forma simples e segura</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </div>
+                    <h3>Autenticação Segura</h3>
+                    <p>Utilize criptografia RSA com chaves de 1024 bits e assinaturas SHA1withRSA para máxima segurança.</p>
+                    <span class="feature-tag">RSA</span>
+                    <span class="feature-tag">JWT</span>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm-8 2h2v2h-2V6zm0 4h2v2h-2v-2zm-4-4h2v2H8V6zm0 4h2v2H8v-2zm10 8H6v-2h12v2zm0-4h-4v-2h4v2zm0-4h-4V8h4v2z"/>
+                        </svg>
+                    </div>
+                    <h3>Múltiplos Métodos</h3>
+                    <p>Pagamento via app PAYPAY, MULTICAIXA Expre, referência, transferências bancárias e internas.</p>
+                    <span class="feature-tag">8+ Endpoints</span>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/>
+                        </svg>
+                    </div>
+                    <h3>Notificações em Tempo Real</h3>
+                    <p>Webhooks assíncronos com retentativas automáticas para garantir que você nunca perca uma atualização.</p>
+                    <span class="feature-tag">7 tentativas</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Endpoints Section -->
+    <section class="endpoints" id="endpoints">
+        <div class="container">
+            <h2 class="section-title">Endpoints Disponíveis</h2>
+            <p class="section-subtitle">Escolha o endpoint adequado para sua necessidade de integração</p>
+
+            <div class="endpoints-grid">
+                <!-- Endpoint 3.1 -->
+                <a href="pages/payment-app.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">Pagamento PayPay</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.1</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/payment/app</div>
+                        <div class="endpoint-desc">Cria um pagamento via app PAYPAY</div>
+                        <div class="endpoint-badges-container">
+                            <span class="endpoint-badge">QR Code</span>
+                            <span class="endpoint-badge">URL Scheme</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.2 -->
+                <a href="pages/payment-multicaixa.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">MULTICAIXA Express</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.2</span>
+                        <span class="unavailable-badge">Não disponível</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/payment/multicaixa</div>
+                        <div class="endpoint-desc">Pagamento via MULTICAIXA Express</div>
+                        <div class="endpoint-badges-container">
+                            <span class="endpoint-badge">SMS</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.3 -->
+                <a href="pages/payment-reference.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">REFERÊNCIA</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.3</span>
+                        <span class="unavailable-badge">Não disponível</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/payment/reference</div>
+                        <div class="endpoint-desc">Gera referência para pagamento</div>
+                        <div class="endpoint-badges-container">
+                            <span class="endpoint-badge">Entity ID</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.4 -->
+                <a href="pages/refund.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">REEMBOLSO</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.4</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/refund</div>
+                        <div class="endpoint-desc">Solicita reembolso (total/parcial)</div>
+                        <div class="endpoint-badges-container">
+                            <span class="endpoint-badge">180 dias</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.5 -->
+                <a href="pages/payment-close.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">FECHAR</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.5</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/payment/close</div>
+                        <div class="endpoint-desc">Fecha um pagamento pendente</div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.6 -->
+                <a href="pages/query-status.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">CONSULTA</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.6</span>
+                        <span class="endpoint-method method-get">GET</span>
+                        <div class="endpoint-path">/query/status</div>
+                        <div class="endpoint-desc">Consulta status de transação</div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.7 -->
+                <a href="pages/transfer-bank.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">Transferência Bancária</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.7</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/transfer/bank</div>
+                        <div class="endpoint-desc">Transferência para conta bancária</div>
+                        <div class="endpoint-badges-container">
+                            <span class="endpoint-badge">IBAN</span>
+                        </div>
+                    </div>
+                </a>
+
+                <!-- Endpoint 3.8 -->
+                <a href="pages/transfer-account.html" class="endpoint-card">
+                    <div class="endpoint-title-vertical">TRANSF CONTAS</div>
+                    <div class="endpoint-content">
+                        <span class="endpoint-identifier">3.8</span>
+                        <span class="endpoint-method method-post">POST</span>
+                        <div class="endpoint-path">/transfer/account</div>
+                        <div class="endpoint-desc">Transferência entre contas PAYPAY</div>
+                        <div class="endpoint-badges-container">
+                            <span class="endpoint-badge">Instantâneo</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Start Section -->
+    <section class="quick-start" id="quick-start">
+        <div class="container">
+            <h2 class="section-title">Comece Rápido</h2>
+            <p class="section-subtitle">Exemplo prático de criação de pagamento via app PAYPAY</p>
+
+            <div class="code-block">
+                <div class="code-header">
+                    <span>Requisição de exemplo</span>
+                    <button class="copy-btn" data-target="code-sample" onclick="copyCode('code-sample', this)">Copiar</button>
+                </div>
+                <pre id="code-sample">curl -X POST https://api.paypayafrica.com/v1/payment/app \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer YOUR_TOKEN" \
+  -d '{
+    "request_no": "20240320123456789",
+    "service": "instant_trade",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": "GkTO5wRUFTij4GPniUQChPquaLoDNzi3z..."
+  }'</pre>
+            </div>
+
+            <div class="response-section">
+                <h3 class="response-title">Resposta de Exemplo</h3>
+                <div class="code-block response-block">
+                    <div class="code-header">
+                        <span>Resposta da API (sucesso)</span>
+                        <button class="copy-btn" data-target="response-sample" onclick="copyCode('response-sample', this)">Copiar</button>
+                    </div>
+                    <pre id="response-sample">{
+  "code": "S0001",
+  "sub_code": "S0001",
+  "msg": "success",
+  "sub_msg": "success",
+  "sign": "g+DCRRN1s3sf+gD6kVk0IEHeJBL7pO0KeWKXd1wpVCir06izh3LfG++7Th9KRVl8RrvEt6AWSUnx54rOw5YIHlsyPrjF5G5Stq32WsBsor8MC5GLLi8Na5xuwelOh1dh1wogl7BkMlhFTCpQfhsYKihRCULRsOqftynjLRX7cYB8OtoWdYNViCArsiPc1jMfXYPQH8WvZZneFhKhh31hRjH5woBfulFkYKobPLD+gZO69KEkPN1LTmG/yKzBVRD8ZMU0ZMqZMUeSM+u6ywuffG+DNJtzXwQwNhDtFeEPXuyWkOrplnANGSzJgj2n4245aiuMVUyjRVX5eLRCfUNQSQ==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": {
+    "out_trade_no": "2022011812364864515635551",
+    "trade_no": "101164267909194269883",
+    "status": "P",
+    "trade_token": "3b189ff399db4de4a24bae47bdadf4ef",
+    "dynamic_link": "https://xxx.xxx/dynamic/link/3b189ff399db4de4a24bae47bdadf4ef"
+  }
+}</pre>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Security Section -->
+    <section class="security">
+        <div class="container">
+            <h2 class="section-title">Segurança em Primeiro Lugar</h2>
+            <p class="section-subtitle">Proteção de ponta a ponta para suas transações</p>
+
+            <div class="security-cards">
+                <div class="security-card">
+                    <h3>Criptografia RSA</h3>
+                    <ul>
+                        <li>Chaves de 1024 bits</li>
+                        <li>Apenas biz_content é criptografado</li>
+                        <li>Proteção de dados sensíveis</li>
+                    </ul>
+                </div>
+
+                <div class="security-card">
+                    <h3>Assinatura Digital</h3>
+                    <ul>
+                        <li>SHA1withRSA</li>
+                        <li>Validação de integridade</li>
+                        <li>Prevenção contra adulteração</li>
+                    </ul>
+                </div>
+
+                <div class="security-card">
+                    <h3>Rate Limiting</h3>
+                    <ul>
+                        <li>1000 requisições/hora</li>
+                        <li>Headers de limite inclusos</li>
+                        <li>Proteção contra abuso</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Pronto para integrar?</h2>
+            <p>Comece hoje mesmo a aceitar pagamentos com PAYPAY Angola</p>
+            <div class="hero-buttons">
+                <a href="https://portal.paypayafrica.com" target="_blank" class="btn btn-primary">Acessar Portal</a>
+                <a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')" class="btn btn-outline">Falar com Suporte</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PAYPAY AO API</h4>
+                    <p>Solução completa de pagamentos digitais para Angola.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentação</h4>
+                    <ul>
+                        <li><a href="#quick-start">Guia de Integração</a></li>
+                        <li><a href="#endpoints">Referência da API</a></li>
+                        <li><a href="#" onclick="showToast('Exemplos disponíveis em breve!')">Exemplos de Código</a></li>
+                        <li><a href="#" onclick="showToast('Códigos de erro disponíveis em breve!')">Códigos de Erro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('FAQ disponível em breve!')">FAQ</a></li>
+                        <li><a href="#" onclick="showToast('Status do sistema: Online')">Status do Sistema</a></li>
+                        <li><a href="#" onclick="showToast('Changelog v1.0 - Lançamento')">Changelog</a></li>
+                        <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('Termos de uso disponíveis em breve!')">Termos de Uso</a></li>
+                        <li><a href="#" onclick="showToast('Política de privacidade disponível em breve!')">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="showToast('Segurança: RSA 1024 bits')">Segurança</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2021-2025 PAYPAY. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Tutorial Modal -->
+    <div id="tutorialModal" class="tutorial-modal" onclick="closeTutorialModal()">
+        <div class="tutorial-modal-content" onclick="event.stopPropagation()">
+            <div class="tutorial-modal-header">
+                <h3 id="tutorialTitle">Tutorial Passo a Passo</h3>
+                <button class="tutorial-modal-close" onclick="closeTutorialModal()">&times;</button>
+            </div>
+            <div class="tutorial-modal-body">
+                <div id="tutorialContent" class="tutorial-content">
+                    <!-- Conteúdo será carregado dinamicamente -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

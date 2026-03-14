@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST /payment/app - Pagamento via App PAYPAY</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <a href="../index.html" class="logo">PAYPAY AO <span>API v1.0</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="../index.html#endpoints">Endpoints</a></li>
+                    <li><a href="../index.html#quick-start">Docs</a></li>
+                    <li><a href="https://portal.paypayafrica.com" target="_blank">Portal</a></li>
+                    <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Início</a> > <a href="../index.html#endpoints">Endpoints</a> > Payment App
+            </div>
+            <h1>Pagamento via App PAYPAY</h1>
+            <p>Cria um pagamento para ser pago através do aplicativo PAYPAY</p>
+        </div>
+    </section>
+
+    <!-- Endpoint Detail -->
+    <section class="endpoint-detail">
+        <div class="container">
+            <div class="endpoint-info">
+                <div class="endpoint-header">
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-url">https://api.paypayafrica.com/v1/payment/app</span>
+                    <div class="endpoint-tags">
+                        <span class="endpoint-tag">QR Code</span>
+                        <span class="endpoint-tag">URL Scheme</span>
+                        <span class="endpoint-tag">Mobile</span>
+                    </div>
+                </div>
+
+                <h2>Descrição</h2>
+                <p>Este endpoint cria uma solicitação de pagamento que será processada através do aplicativo PAYPAY. O cliente pode pagar escaneando um QR Code ou através de um link profundo que abre o app.</p>
+
+                <h2>Parâmetros da Requisição</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>request_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Número único da requisição (alfanumérico e underline)</td>
+                            </tr>
+                            <tr>
+                                <td><code>service</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor fixo: "instant_trade"</td>
+                            </tr>
+                            <tr>
+                                <td><code>version</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Versão da API: "1.0"</td>
+                            </tr>
+                            <tr>
+                                <td><code>partner_id</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(32)</td>
+                                <td>Número do merchant (obtido no portal)</td>
+                            </tr>
+                            <tr>
+                                <td><code>charset</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"UTF-8"</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor da assinatura RSA</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign_type</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"RSA"</td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(19)</td>
+                                <td>Formato "yyyy-MM-dd HH:mm:ss" (GMT+1)</td>
+                            </tr>
+                            <tr>
+                                <td><code>format</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"JSON"</td>
+                            </tr>
+                            <tr>
+                                <td><code>language</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"pt" ou "en"</td>
+                            </tr>
+                            <tr>
+                                <td><code>biz_content</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Conteúdo de negócio CRIPTOGRAFADO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Conteúdo de Negócio (biz_content)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>payer_ip</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>IP público do comprador</td>
+                            </tr>
+                            <tr>
+                                <td><code>sale_product_code</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(9)</td>
+                                <td>Contactar suporte PAYPAY</td>
+                            </tr>
+                            <tr>
+                                <td><code>cashier_type</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"SDK"</td>
+                            </tr>
+                            <tr>
+                                <td><code>timeout_express</code></td>
+                                <td><span class="optional">Não</span></td>
+                                <td>String(6)</td>
+                                <td>Tempo de expiração (ex: 15m, 2H). Padrão: 2H</td>
+                            </tr>
+                            <tr>
+                                <td><code>return_url</code></td>
+                                <td><span class="optional">Não</span></td>
+                                <td>String</td>
+                                <td>URL de retorno após pagamento</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Informações do Produto (trade_info)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>out_trade_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Número do pedido do merchant</td>
+                            </tr>
+                            <tr>
+                                <td><code>subject</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Nome do produto/serviço</td>
+                            </tr>
+                            <tr>
+                                <td><code>currency</code></td>
+                                <td><span class="optional">Não</span></td>
+                                <td>String</td>
+                                <td>"AOA" (padrão)</td>
+                            </tr>
+                            <tr>
+                                <td><code>price</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Preço unitário</td>
+                            </tr>
+                            <tr>
+                                <td><code>quantity</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Quantidade</td>
+                            </tr>
+                            <tr>
+                                <td><code>total_amount</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor total (price * quantity)</td>
+                            </tr>
+                            <tr>
+                                <td><code>payee_identity</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Número do merchant</td>
+                            </tr>
+                            <tr>
+                                <td><code>payee_identity_type</code></td>
+                                <td><span class="optional">Não</span></td>
+                                <td>String</td>
+                                <td>Tipo de identidade (1 - member ID, 2 - login)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Exemplos de Código</h2>
+                <div class="code-samples">
+                    <div class="sample-tabs">
+                        <button class="sample-tab active" data-tab="curl" data-content="curl-sample">cURL</button>
+                        <button class="sample-tab" data-tab="javascript" data-content="js-sample">JavaScript</button>
+                        <button class="sample-tab" data-tab="python" data-content="py-sample">Python</button>
+                        <button class="sample-tab" data-tab="php" data-content="php-sample">PHP</button>
+                    </div>
+
+                    <div class="sample-content active" id="curl-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com cURL</span>
+                                <button class="copy-btn" data-target="curl-code">Copiar</button>
+                            </div>
+                            <pre id="curl-code">curl -X POST https://api.paypayafrica.com/v1/payment/app \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_no": "20240320123456789",
+    "service": "instant_trade",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": "GkTO5wRUFTij4GPniUQChPquaLoDNzi3z..."
+  }'</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="js-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com JavaScript (Fetch)</span>
+                                <button class="copy-btn" data-target="js-code">Copiar</button>
+                            </div>
+                            <pre id="js-code">// Exemplo com JavaScript (Node.js ou Browser)
+const fetch = require('node-fetch'); // Para Node.js
+
+const url = 'https://api.paypayafrica.com/v1/payment/app';
+const data = {
+    request_no: '20240320123456789',
+    service: 'instant_trade',
+    version: '1.0',
+    partner_id: '200001835716',
+    charset: 'UTF-8',
+    sign: 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    sign_type: 'RSA',
+    timestamp: '2024-03-20 14:30:00',
+    format: 'JSON',
+    language: 'pt',
+    biz_content: 'GkTO5wRUFTij4GPniUQChPquaLoDNzi3z...'
+};
+
+fetch(url, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data)
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Resposta:', data);
+    // Processar a resposta
+    if (data.code === 'S0001') {
+        const bizContent = JSON.parse(atob(data.biz_content)); // Decodificar base64
+        console.log('Link dinâmico:', bizContent.dynamic_link);
+        console.log('Token:', bizContent.trade_token);
+    }
+})
+.catch(error => console.error('Erro:', error));</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="py-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com Python (requests)</span>
+                                <button class="copy-btn" data-target="py-code">Copiar</button>
+                            </div>
+                            <pre id="py-code">import requests
+import json
+import base64
+
+url = "https://api.paypayafrica.com/v1/payment/app"
+
+payload = {
+    "request_no": "20240320123456789",
+    "service": "instant_trade",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": "GkTO5wRUFTij4GPniUQChPquaLoDNzi3z..."
+}
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+try:
+    response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
+    
+    data = response.json()
+    print("Resposta:", json.dumps(data, indent=2))
+    
+    # Processar a resposta
+    if data.get('code') == 'S0001':
+        # Decodificar biz_content (assumindo base64)
+        biz_content = json.loads(base64.b64decode(data['biz_content']))
+        print("Link dinâmico:", biz_content['dynamic_link'])
+        print("Token:", biz_content['trade_token'])
+        
+except requests.exceptions.RequestException as e:
+    print(f"Erro na requisição: {e}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="php-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com PHP (cURL)</span>
+                                <button class="copy-btn" data-target="php-code">Copiar</button>
+                            </div>
+                            <pre id="php-code">&lt;?php
+$url = 'https://api.paypayafrica.com/v1/payment/app';
+
+$data = array(
+    'request_no' => '20240320123456789',
+    'service' => 'instant_trade',
+    'version' => '1.0',
+    'partner_id' => '200001835716',
+    'charset' => 'UTF-8',
+    'sign' => 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    'sign_type' => 'RSA',
+    'timestamp' => '2024-03-20 14:30:00',
+    'format' => 'JSON',
+    'language' => 'pt',
+    'biz_content' => 'GkTO5wRUFTij4GPniUQChPquaLoDNzi3z...'
+);
+
+$json_data = json_encode($data);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($json_data)
+));
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if (curl_errno($ch)) {
+    echo 'Erro cURL: ' . curl_error($ch);
+} else {
+    echo "HTTP Code: $http_code\n";
+    $response_data = json_decode($response, true);
+    echo "Resposta: " . json_encode($response_data, JSON_PRETTY_PRINT) . "\n";
+    
+    // Processar a resposta
+    if ($response_data['code'] == 'S0001') {
+        // Decodificar biz_content (assumindo base64)
+        $biz_content = json_decode(base64_decode($response_data['biz_content']), true);
+        echo "Link dinâmico: " . $biz_content['dynamic_link'] . "\n";
+        echo "Token: " . $biz_content['trade_token'] . "\n";
+    }
+}
+
+curl_close($ch);
+?&gt;</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Resposta da API</h2>
+                <div class="response-section">
+                    <h3 class="response-title">Resposta de Sucesso (3.1.4 Response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta da API (código S0001)</span>
+                            <button class="copy-btn" data-target="response-success">Copiar</button>
+                        </div>
+                        <pre id="response-success">{
+  "code": "S0001",
+  "sub_code": "S0001",
+  "msg": "success",
+  "sub_msg": "success",
+  "sign": "g+DCRRN1s3sf+gD6kVk0IEHeJBL7pO0KeWKXd1wpVCir06izh3LfG++7Th9KRVl8RrvEt6AWSUnx54rOw5YIHlsyPrjF5G5Stq32WsBsor8MC5GLLi8Na5xuwelOh1dh1wogl7BkMlhFTCpQfhsYKihRCULRsOqftynjLRX7cYB8OtoWdYNViCArsiPc1jMfXYPQH8WvZZneFhKhh31hRjH5woBfulFkYKobPLD+gZO69KEkPN1LTmG/yKzBVRD8ZMU0ZMqZMUeSM+u6ywuffG+DNJtzXwQwNhDtFeEPXuyWkOrplnANGSzJgj2n4245aiuMVUyjRVX5eLRCfUNQSQ==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": "eyJvdXRfdHJhZGVfbm8iOiAiMjAyMjAxMTgxMjM2NDg2NDUxNTYzNTU1MSIsICJ0cmFkZV9ubyI6ICIxMDExNjQyNjc5MDkxOTQyNjk4ODMiLCAic3RhdHVzIjogIlAiLCAidHJhZGVfdG9rZW4iOiAiM2IxODllZmYzOTlkYjRlZGEyNGJhZTQ3YmRhZGY0ZWYiLCAiZHluYW1pY19saW5rIjogImh0dHBzOi8veHh4Lnh4eC9keW5hbWljL2xpbmsvM2IxODllZmYzOTlkYjRlZGEyNGJhZTQ3YmRhZGY0ZWYifQ=="
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Campos da resposta:</strong> <code>code</code> (código principal), <code>sub_code</code> (subcódigo), <code>msg</code> (mensagem), <code>sub_msg</code> (submensagem), <code>sign</code> (assinatura), <code>charset</code> (encoding), <code>sign_type</code> (tipo de assinatura), <code>biz_content</code> (conteúdo de negócio em base64).</p>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Conteúdo de Negócio Decodificado (3.1.5 Business content of response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>biz_content após decodificação base64</span>
+                            <button class="copy-btn" data-target="bizcontent-decoded">Copiar</button>
+                        </div>
+                        <pre id="bizcontent-decoded">{
+  "out_trade_no": "2022011812364864515635551",
+  "trade_no": "101164267909194269883",
+  "status": "P",
+  "trade_token": "3b189ff399db4de4a24bae47bdadf4ef",
+  "dynamic_link": "https://xxx.xxx/dynamic/link/3b189ff399db4de4a24bae47bdadf4ef"
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Descrição dos campos:</strong></p>
+                    <ul class="response-note">
+                        <li><code>out_trade_no</code>: Número do pedido do merchant</li>
+                        <li><code>trade_no</code>: Número do pedido PAYPAY</li>
+                        <li><code>status</code>: Status do pagamento (S-Sucesso, P-Processando, F-Falha)</li>
+                        <li><code>trade_token</code>: Token do pagamento para URL scheme</li>
+                        <li><code>dynamic_link</code>: Link dinâmico (pode ser usado para gerar QR Code)</li>
+                    </ul>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Exemplos de Erro</h3>
+                    
+                    <h4>Erro de Permissão (F11)</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F11001</span>
+                            <button class="copy-btn" data-target="error-f11">Copiar</button>
+                        </div>
+                        <pre id="error-f11">{
+  "code": "F11",
+  "sub_code": "F11001",
+  "msg": "Insufficient permissions",
+  "sub_msg": "Insufficient interface authority",
+  "sign": "g+DCRRN1s3sf+gD6kVk0IEHeJBL7pO0KeWKXd1wpVCir06izh3LfG++7Th9KRVl8RrvEt6AWSUnx54rOw5YIHlsyPrjF5G5Stq32WsBsor8MC5GLLi8Na5xuwelOh1dh1wogl7BkMlhFTCpQfhsYKihRCULRsOqftynjLRX7cYB8OtoWdYNViCArsiPc1jMfXYPQH8WvZZneFhKhh31hRjH5woBfulFkYKobPLD+gZO69KEkPN1LTmG/yKzBVRD8ZMU0ZMqZMUeSM+u6ywuffG+DNJtzXwQwNhDtFeEPXuyWkOrplnANGSzJgj2n4245aiuMVUyjRVX5eLRCfUNQSQ==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>Erro de Parâmetro (F31)</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F31001</span>
+                            <button class="copy-btn" data-target="error-f31">Copiar</button>
+                        </div>
+                        <pre id="error-f31">{
+  "code": "F31",
+  "sub_code": "F31001",
+  "msg": "Illegal parameter",
+  "sub_msg": "Request parameter verification failed",
+  "sign": "g+DCRRN1s3sf+gD6kVk0IEHeJBL7pO0KeWKXd1wpVCir06izh3LfG++7Th9KRVl8RrvEt6AWSUnx54rOw5YIHlsyPrjF5G5Stq32WsBsor8MC5GLLi8Na5xuwelOh1dh1wogl7BkMlhFTCpQfhsYKihRCULRsOqftynjLRX7cYB8OtoWdYNViCArsiPc1jMfXYPQH8WvZZneFhKhh31hRjH5woBfulFkYKobPLD+gZO69KEkPN1LTmG/yKzBVRD8ZMU0ZMqZMUeSM+u6ywuffG+DNJtzXwQwNhDtFeEPXuyWkOrplnANGSzJgj2n4245aiuMVUyjRVX5eLRCfUNQSQ==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Códigos de Status</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Descrição</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>P</code></td>
+                                    <td>Pagamento em processamento (Payment processing)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>S</code></td>
+                                    <td>Pagamento concluído com sucesso (Payment successful)</td>
+                                </tr>
+                                <tr>
+                                    <td><code>F</code></td>
+                                    <td>Falha no pagamento (Payment failed)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Sugestões de Implementação</h3>
+                    <div class="response-note">
+                        <p><strong>Para aplicações mobile:</strong> Utilize o URL scheme <code>paypayao://trade/pay?action=pay&tradeToken={trade_token}</code> para abrir diretamente o app PAYPAY.</p>
+                        <p><strong>Para aplicações web/desktop:</strong> Converta o <code>dynamic_link</code> em um QR Code para que o usuário possa escanear com o app PAYPAY.</p>
+                        <p><strong>Exemplo de geração de QR Code:</strong></p>
+                        <pre>// JavaScript
+const QRCode = require('qrcode');
+QRCode.toFile('qrcode.png', dynamic_link);</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PAYPAY AO API</h4>
+                    <p>Solução completa de pagamentos digitais para Angola.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentação</h4>
+                    <ul>
+                        <li><a href="../index.html#quick-start">Guia de Integração</a></li>
+                        <li><a href="../index.html#endpoints">Referência da API</a></li>
+                        <li><a href="#" onclick="showToast('Exemplos disponíveis em breve!')">Exemplos de Código</a></li>
+                        <li><a href="#" onclick="showToast('Códigos de erro disponíveis em breve!')">Códigos de Erro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('FAQ disponível em breve!')">FAQ</a></li>
+                        <li><a href="#" onclick="showToast('Status do sistema: Online')">Status do Sistema</a></li>
+                        <li><a href="#" onclick="showToast('Changelog v1.0 - Lançamento')">Changelog</a></li>
+                        <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('Termos de uso disponíveis em breve!')">Termos de Uso</a></li>
+                        <li><a href="#" onclick="showToast('Política de privacidade disponível em breve!')">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="showToast('Segurança: RSA 1024 bits')">Segurança</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2021-2025 PAYPAY. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Inicializar tabs de exemplo
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.sample-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover active de todas as tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Adicionar active na tab clicada
+                    this.classList.add('active');
+                    
+                    // Esconder todos os conteúdos
+                    document.querySelectorAll('.sample-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Mostrar o conteúdo correspondente
+                    const contentId = this.getAttribute('data-content');
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

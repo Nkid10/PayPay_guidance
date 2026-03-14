@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST /transfer/bank - Transferência para Conta Bancária</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <a href="../index.html" class="logo">PAYPAY AO <span>API v1.0</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="../index.html#endpoints">Endpoints</a></li>
+                    <li><a href="../index.html#quick-start">Docs</a></li>
+                    <li><a href="https://portal.paypayafrica.com" target="_blank">Portal</a></li>
+                    <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Início</a> > <a href="../index.html#endpoints">Endpoints</a> > Transferência Bancária
+            </div>
+            <h1>Transferência para Conta Bancária</h1>
+            <p>Transfere fundos da conta PAYPAY do merchant para uma conta bancária (IBAN)</p>
+        </div>
+    </section>
+
+    <!-- Endpoint Detail -->
+    <section class="endpoint-detail">
+        <div class="container">
+            <div class="endpoint-info">
+                <div class="endpoint-header">
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-url">https://api.paypayafrica.com/v1/transfer/bank</span>
+                    <div class="endpoint-tags">
+                        <span class="endpoint-tag">IBAN</span>
+                        <span class="endpoint-tag">Transferência</span>
+                        <span class="endpoint-tag">Bancário</span>
+                    </div>
+                </div>
+
+                <h2>Descrição</h2>
+                <p>Este endpoint permite transferir fundos da conta PAYPAY do merchant para uma conta bancária com IBAN válido em Angola. O serviço é iniciado pelo merchant e os fundos são transferidos da conta PAYPAY do merchant para a conta bancária especificada.</p>
+
+                <h2>Parâmetros da Requisição</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>request_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Número único da requisição (alfanumérico e underline)</td>
+                            </tr>
+                            <tr>
+                                <td><code>service</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor fixo: "transfer_to_card"</td>
+                            </tr>
+                            <tr>
+                                <td><code>version</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Versão da API: "1.0"</td>
+                            </tr>
+                            <tr>
+                                <td><code>partner_id</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(32)</td>
+                                <td>Número do merchant (obtido no portal)</td>
+                            </tr>
+                            <tr>
+                                <td><code>charset</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"UTF-8"</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor da assinatura RSA</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign_type</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"RSA"</td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(19)</td>
+                                <td>Formato "yyyy-MM-dd HH:mm:ss" (GMT+1)</td>
+                            </tr>
+                            <tr>
+                                <td><code>format</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"JSON"</td>
+                            </tr>
+                            <tr>
+                                <td><code>language</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"pt" ou "en"</td>
+                            </tr>
+                            <tr>
+                                <td><code>biz_content</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Conteúdo de negócio CRIPTOGRAFADO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Conteúdo de Negócio (biz_content)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>out_trade_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Número do pedido do merchant (único)</td>
+                            </tr>
+                            <tr>
+                                <td><code>payer_identity_type</code></td>
+                                <td><span class="optional">Não</span></td>
+                                <td>String(2)</td>
+                                <td>Tipo de ID do pagador: 1 (member ID) padrão, 2 (login)</td>
+                            </tr>
+                            <tr>
+                                <td><code>payer_identity</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>ID do pagador (member ID ou login)</td>
+                            </tr>
+                            <tr>
+                                <td><code>amount</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(15)</td>
+                                <td>Valor a transferir (2 casas decimais)</td>
+                            </tr>
+                            <tr>
+                                <td><code>currency</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(3)</td>
+                                <td>Moeda: "AOA" (padrão)</td>
+                            </tr>
+                            <tr>
+                                <td><code>bank_card_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>IBAN do beneficiário (começa com AO06)</td>
+                            </tr>
+                            <tr>
+                                <td><code>bank_account_name</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(256)</td>
+                                <td>Nome do titular da conta (sem números)</td>
+                            </tr>
+                            <tr>
+                                <td><code>bank_code</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(16)</td>
+                                <td>Código do banco (ex: BIC, BPA, BAI)</td>
+                            </tr>
+                            <tr>
+                                <td><code>sale_product_code</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(9)</td>
+                                <td>Contactar suporte PAYPAY</td>
+                            </tr>
+                            <tr>
+                                <td><code>pay_product_code</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(5)</td>
+                                <td>Código do produto: "11" (valor padrão)</td>
+                            </tr>
+                            <tr>
+                                <td><code>memo</code></td>
+                                <td><span class="optional">Não</span></td>
+                                <td>String(128)</td>
+                                <td>Observações da transferência</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Bancos Suportados</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Banco</th>
+                                <th>IBAN Prefix</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td>BAI</td><td>Banco Angolano de Investimentos</td><td>AO060040</td></tr>
+                            <tr><td>BFA</td><td>Bancos de Fomento Angola</td><td>AO060006</td></tr>
+                            <tr><td>YETU</td><td>Banco Yetu</td><td>AO060066</td></tr>
+                            <tr><td>BANC</td><td>Banco Angolano de Negócios e Comércio</td><td>AO060053</td></tr>
+                            <tr><td>BMF</td><td>Banco BAI Microfinanças</td><td>AO060048</td></tr>
+                            <tr><td>BIC</td><td>Banco BIC</td><td>AO060051</td></tr>
+                            <tr><td>BCA</td><td>Banco Comercial Angolano</td><td>AO060043</td></tr>
+                            <tr><td>BCH</td><td>Banco Comercial do Huambo</td><td>AO060059</td></tr>
+                            <tr><td>BCI</td><td>Banco de Comércio e Indústria</td><td>AO060005</td></tr>
+                            <tr><td>BDA</td><td>Banco de Desenvolvimento Angola</td><td>AO060054</td></tr>
+                            <tr><td>BIR</td><td>Banco de Investimento Rural</td><td>AO060067</td></tr>
+                            <tr><td>BNI</td><td>Banco de Negócios Internacional</td><td>AO060052</td></tr>
+                            <tr><td>BPC</td><td>Banco de Poupança e Crédito</td><td>AO060010</td></tr>
+                            <tr><td>BE</td><td>Banco Económico</td><td>AO060045</td></tr>
+                            <tr><td>KEVE</td><td>Banco Keve</td><td>AO060047</td></tr>
+                            <tr><td>BKI</td><td>Banco Kwanza Investimento</td><td>AO060057</td></tr>
+                            <tr><td>BPG</td><td>Banco Prestígio</td><td>AO060064</td></tr>
+                            <tr><td>BPA</td><td>Banco Millennnium Atlântico</td><td>AO060055</td></tr>
+                            <tr><td>BMAIS</td><td>Banco Mais</td><td>AO060065</td></tr>
+                            <tr><td>BSOL</td><td>Banco Sol</td><td>AO060044</td></tr>
+                            <tr><td>BVB</td><td>Banco Valor</td><td>AO060062</td></tr>
+                            <tr><td>FNB</td><td>Finibanco Angola</td><td>AO060058</td></tr>
+                            <tr><td>SBA</td><td>Standard Bank de Angola</td><td>AO060058</td></tr>
+                            <tr><td>VTB</td><td>Banco VTB África</td><td>AO060056</td></tr>
+                            <tr><td>BCGA</td><td>Banco Caixa Geral de Angola</td><td>AO060004</td></tr>
+                            <tr><td>SCBA</td><td>Standard Chartered Bank de Angola</td><td>AO060063</td></tr>
+                            <tr><td>CCP</td><td>CCP</td><td>AO060000</td></tr>
+                            <tr><td>USPM</td><td>USPM</td><td>AO060417</td></tr>
+                            <tr><td>BCS</td><td>BCS</td><td>AO060070</td></tr>
+                            <tr><td>PAYPAY</td><td>PAYPAY</td><td>AO060420</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Exemplos de Código</h2>
+                <div class="code-samples">
+                    <div class="sample-tabs">
+                        <button class="sample-tab active" data-tab="curl" data-content="curl-sample">cURL</button>
+                        <button class="sample-tab" data-tab="javascript" data-content="js-sample">JavaScript</button>
+                        <button class="sample-tab" data-tab="python" data-content="py-sample">Python</button>
+                        <button class="sample-tab" data-tab="php" data-content="php-sample">PHP</button>
+                    </div>
+
+                    <div class="sample-content active" id="curl-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com cURL</span>
+                                <button class="copy-btn" data-target="curl-code">Copiar</button>
+                            </div>
+                            <pre id="curl-code">curl -X POST https://api.paypayafrica.com/v1/transfer/bank \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_no": "20240320123456789",
+    "service": "transfer_to_card",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": "eyJvdXRfdHJhZGVfbm8iOiAiMjAyNDAzMjAxMjM0NTY3ODkiLCAicGF5ZXJfaWRlbnRpdHkiOiAiMjAwMDAyMTI1NzU2IiwgInBheWVyX2lkZW50aXR5X3R5cGUiOiAiMSIsICJhbW91bnQiOiAiMTUwMDAuMDAiLCAiY3VycmVuY3kiOiAiQU9BIiwgImJhbmtfY2FyZF9ubyI6ICJBTzA2MDA1MTAwMDAwMDExMTExMTc3ODgxIiwgImJhbmtfYWNjb3VudF9uYW1lIjogIkpvw6NvIFNpbHZhIiwgImJhbmtfY29kZSI6ICJCSVAiLCAic2FsZV9wcm9kdWN0X2NvZGUiOiAiMDUwMjAwMDAxIiwgInBheV9wcm9kdWN0X2NvZGUiOiAiMTEiLCAibWVtbyI6ICJUcmFuc2ZlcsOqbmNpYSBwYXJhIGZvcm5lY2Vkb3IifQ=="
+  }'</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="js-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com JavaScript (Node.js)</span>
+                                <button class="copy-btn" data-target="js-code">Copiar</button>
+                            </div>
+                            <pre id="js-code">// Exemplo com JavaScript (Node.js)
+const crypto = require('crypto');
+
+// Dados do biz_content (antes da criptografia)
+const bizContent = {
+    out_trade_no: '20240320123456789',
+    payer_identity: '200002125756',
+    payer_identity_type: '1',
+    amount: '15000.00',
+    currency: 'AOA',
+    bank_card_no: 'AO06005100000011111177881',
+    bank_account_name: 'João Silva',
+    bank_code: 'BIC',
+    sale_product_code: '050200001',
+    pay_product_code: '11',
+    memo: 'Transferência para fornecedor'
+};
+
+// Função para criptografar (exemplo - use a biblioteca adequada)
+function encryptRSA(text, publicKey) {
+    // Implementar criptografia RSA
+    return Buffer.from(JSON.stringify(text)).toString('base64');
+}
+
+const encryptedBizContent = encryptRSA(bizContent);
+
+const requestData = {
+    request_no: '20240320123456789',
+    service: 'transfer_to_card',
+    version: '1.0',
+    partner_id: '200001835716',
+    charset: 'UTF-8',
+    sign: 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    sign_type: 'RSA',
+    timestamp: '2024-03-20 14:30:00',
+    format: 'JSON',
+    language: 'pt',
+    biz_content: encryptedBizContent
+};
+
+fetch('https://api.paypayafrica.com/v1/transfer/bank', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData)
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Resposta:', data);
+    
+    if (data.code === 'S0001') {
+        // Decodificar biz_content da resposta
+        const responseBizContent = JSON.parse(Buffer.from(data.biz_content, 'base64').toString());
+        console.log('Status da transferência:', responseBizContent.status);
+        console.log('Número PAYPAY:', responseBizContent.trade_no);
+    }
+})
+.catch(error => console.error('Erro:', error));</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="py-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com Python</span>
+                                <button class="copy-btn" data-target="py-code">Copiar</button>
+                            </div>
+                            <pre id="py-code">import requests
+import json
+import base64
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+
+# Dados do biz_content
+biz_content = {
+    "out_trade_no": "20240320123456789",
+    "payer_identity": "200002125756",
+    "payer_identity_type": "1",
+    "amount": "15000.00",
+    "currency": "AOA",
+    "bank_card_no": "AO06005100000011111177881",
+    "bank_account_name": "João Silva",
+    "bank_code": "BIC",
+    "sale_product_code": "050200001",
+    "pay_product_code": "11",
+    "memo": "Transferência para fornecedor"
+}
+
+# Função para criptografar (exemplo)
+def encrypt_biz_content(data, public_key_path):
+    # Implementar criptografia RSA com chave pública
+    json_str = json.dumps(data)
+    return base64.b64encode(json_str.encode()).decode()
+
+# Requisição
+url = "https://api.paypayafrica.com/v1/transfer/bank"
+
+payload = {
+    "request_no": "20240320123456789",
+    "service": "transfer_to_card",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": encrypt_biz_content(biz_content)
+}
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+try:
+    response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
+    
+    data = response.json()
+    print("Resposta:", json.dumps(data, indent=2))
+    
+    if data.get('code') == 'S0001':
+        # Decodificar resposta
+        response_biz = json.loads(base64.b64decode(data['biz_content']))
+        print(f"Status: {response_biz['status']}")
+        print(f"Trade No: {response_biz['trade_no']}")
+        
+except requests.exceptions.RequestException as e:
+    print(f"Erro na requisição: {e}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="php-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com PHP</span>
+                                <button class="copy-btn" data-target="php-code">Copiar</button>
+                            </div>
+                            <pre id="php-code">&lt;?php
+// Dados do biz_content
+$bizContent = [
+    'out_trade_no' => '20240320123456789',
+    'payer_identity' => '200002125756',
+    'payer_identity_type' => '1',
+    'amount' => '15000.00',
+    'currency' => 'AOA',
+    'bank_card_no' => 'AO06005100000011111177881',
+    'bank_account_name' => 'João Silva',
+    'bank_code' => 'BIC',
+    'sale_product_code' => '050200001',
+    'pay_product_code' => '11',
+    'memo' => 'Transferência para fornecedor'
+];
+
+// Função para criptografar (exemplo - use OpenSSL)
+function encryptBizContent($data) {
+    $json = json_encode($data);
+    return base64_encode($json);
+}
+
+$url = 'https://api.paypayafrica.com/v1/transfer/bank';
+
+$data = [
+    'request_no' => '20240320123456789',
+    'service' => 'transfer_to_card',
+    'version' => '1.0',
+    'partner_id' => '200001835716',
+    'charset' => 'UTF-8',
+    'sign' => 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    'sign_type' => 'RSA',
+    'timestamp' => '2024-03-20 14:30:00',
+    'format' => 'JSON',
+    'language' => 'pt',
+    'biz_content' => encryptBizContent($bizContent)
+];
+
+$json_data = json_encode($data);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($json_data)
+]);
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if (curl_errno($ch)) {
+    echo 'Erro cURL: ' . curl_error($ch);
+} else {
+    echo "HTTP Code: $http_code\n";
+    $response_data = json_decode($response, true);
+    echo "Resposta: " . json_encode($response_data, JSON_PRETTY_PRINT) . "\n";
+    
+    if ($response_data['code'] == 'S0001') {
+        // Decodificar biz_content da resposta
+        $responseBiz = json_decode(base64_decode($response_data['biz_content']), true);
+        echo "Status: " . $responseBiz['status'] . "\n";
+        echo "Trade No: " . $responseBiz['trade_no'] . "\n";
+    }
+}
+
+curl_close($ch);
+?&gt;</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Resposta da API</h2>
+                
+                <div class="response-section">
+                    <h3 class="response-title">Resposta de Sucesso (3.7.3 Response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta da API (código S0001)</span>
+                            <button class="copy-btn" data-target="response-success">Copiar</button>
+                        </div>
+                        <pre id="response-success">{
+  "code": "S0001",
+  "sub_code": "S0001",
+  "msg": "success",
+  "sub_msg": "success",
+  "sign": "yGaysUn2VlgwGJpnkaJcj3HHS6ZgO8ChJUfdpdstH/bUcdfpNUK5S1MfKYgDZhj8DxSF0wQrv4Nycre6tDKWuFtd1iuaLrTW4VpY+csldN/XsCUpzRbOKvj17gOl5mKZrcqsoUCGT6ZX+LmJTlO6WO9Cw8bpXe7w4eujdkyyd581GB+pHk7As0UfTKdUSkZNhJp7xo11La6a0x/awg01Z0jbOtnN9YPpwl7rW8fru3zke45U+Ue46yII6wNnissOif9IijWThAzoUIi+nSpEoL4EYiQZOlgZvf4Nf3/X+u1rLNa8DXCgDZqCQqfQ6y155YBXS8O3X8WPAgwlCv70zw==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": "eyJvdXRfdHJhZGVfbm8iOiAiMjAyNDAzMjAxMjM0NTY3ODkiLCAidHJhZGVfbm8iOiAiMTAxMTY1NzAwNzc2ODU3Njk1OTA3IiwgInN0YXR1cyI6ICJQIn0="
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Conteúdo de Negócio Decodificado (3.7.4 Business content of response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>biz_content após decodificação base64</span>
+                            <button class="copy-btn" data-target="bizcontent-decoded">Copiar</button>
+                        </div>
+                        <pre id="bizcontent-decoded">{
+  "out_trade_no": "20240320123456789",
+  "trade_no": "101165700776857695907",
+  "status": "P"
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Descrição dos campos:</strong></p>
+                    <ul class="response-note">
+                        <li><code>out_trade_no</code>: Número do pedido do merchant</li>
+                        <li><code>trade_no</code>: Número da transação PAYPAY</li>
+                        <li><code>status</code>: Status da transferência (S-Sucesso, P-Processando, F-Falha)</li>
+                    </ul>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Exemplos de Erro</h3>
+                    
+                    <h4>Saldo Insuficiente</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41076</span>
+                            <button class="copy-btn" data-target="error-balance">Copiar</button>
+                        </div>
+                        <pre id="error-balance">{
+  "code": "F41",
+  "sub_code": "F41076",
+  "msg": "Business processing failed",
+  "sub_msg": "Insufficient payment account balance",
+  "sign": "yGaysUn2VlgwGJpnkaJcj3HHS6ZgO8ChJUfdpdstH/bUcdfpNUK5S1MfKYgDZhj8DxSF0wQrv4Nycre6tDKWuFtd1iuaLrTW4VpY+csldN/XsCUpzRbOKvj17gOl5mKZrcqsoUCGT6ZX+LmJTlO6WO9Cw8bpXe7w4eujdkyyd581GB+pHk7As0UfTKdUSkZNhJp7xo11La6a0x/awg01Z0jbOtnN9YPpwl7rW8fru3zke45U+Ue46yII6wNnissOif9IijWThAzoUIi+nSpEoL4EYiQZOlgZvf4Nf3/X+u1rLNa8DXCgDZqCQqfQ6y155YBXS8O3X8WPAgwlCv70zw==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>Banco Não Suportado</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41120</span>
+                            <button class="copy-btn" data-target="error-bank">Copiar</button>
+                        </div>
+                        <pre id="error-bank">{
+  "code": "F41",
+  "sub_code": "F41120",
+  "msg": "Business processing failed",
+  "sub_msg": "This bank is not supported in the current system. Please try another bank!",
+  "sign": "yGaysUn2VlgwGJpnkaJcj3HHS6ZgO8ChJUfdpdstH/bUcdfpNUK5S1MfKYgDZhj8DxSF0wQrv4Nycre6tDKWuFtd1iuaLrTW4VpY+csldN/XsCUpzRbOKvj17gOl5mKZrcqsoUCGT6ZX+LmJTlO6WO9Cw8bpXe7w4eujdkyyd581GB+pHk7As0UfTKdUSkZNhJp7xo11La6a0x/awg01Z0jbOtnN9YPpwl7rW8fru3zke45U+Ue46yII6wNnissOif9IijWThAzoUIi+nSpEoL4EYiQZOlgZvf4Nf3/X+u1rLNa8DXCgDZqCQqfQ6y155YBXS8O3X8WPAgwlCv70zw==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>IBAN Inválido</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41403</span>
+                            <button class="copy-btn" data-target="error-iban">Copiar</button>
+                        </div>
+                        <pre id="error-iban">{
+  "code": "F31",
+  "sub_code": "F41403",
+  "msg": "Illegal parameter",
+  "sub_msg": "Illegal bank card number",
+  "sign": "yGaysUn2VlgwGJpnkaJcj3HHS6ZgO8ChJUfdpdstH/bUcdfpNUK5S1MfKYgDZhj8DxSF0wQrv4Nycre6tDKWuFtd1iuaLrTW4VpY+csldN/XsCUpzRbOKvj17gOl5mKZrcqsoUCGT6ZX+LmJTlO6WO9Cw8bpXe7w4eujdkyyd581GB+pHk7As0UfTKdUSkZNhJp7xo11La6a0x/awg01Z0jbOtnN9YPpwl7rW8fru3zke45U+Ue46yII6wNnissOif9IijWThAzoUIi+nSpEoL4EYiQZOlgZvf4Nf3/X+u1rLNa8DXCgDZqCQqfQ6y155YBXS8O3X8WPAgwlCv70zw==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Status de Transferência</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Descrição</th>
+                                    <th>Notificação Assíncrona</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>S</code></td>
+                                    <td>Transferência bem-sucedida</td>
+                                    <td>TRANSFER_SUCCESS</td>
+                                </tr>
+                                <tr>
+                                    <td><code>P</code></td>
+                                    <td>Transferência em processamento</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td><code>F</code></td>
+                                    <td>Falha na transferência</td>
+                                    <td>TRANSFER_FAIL</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Exemplo de Notificação Assíncrona (Webhook)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Payload do webhook (quando a transferência é concluída)</span>
+                            <button class="copy-btn" data-target="webhook-sample">Copiar</button>
+                        </div>
+                        <pre id="webhook-sample">{
+  "notify_id": "a146a25b97b14399a20acfe24bfccaaa",
+  "notify_type": "trade_status_sync",
+  "notify_create": "1642673913264",
+  "input_charset": "UTF-8",
+  "sign": "jlDVUZsllFqa5LxXwQncGy/YkpulP6sV2qZCpId5zmM5NjC55W26ErQWxsY4kT4RHAf2Z5tGBItDMrkLjZWrtclLyGNaJ/tVKImzIncIEKqXqiP5F2SbaRo/q0t8z1CRvAJ89dIaHcbO9dqR1ADEidXysy1lhxTW4TKM3qsaimr0GcTcaeZo1X5rA7Q2QdfaDm3DCcCU8cHl84ELvkJPPuaMbENN7ouNJvoQqfWWKMHyfebOygcT624GeHE4O3hXioP2dm7AJfLWUEoZPkpIe8jvZ52N50eMdzIRd6GbFATos3ouWA56su/ZrguiTVUrXQYxpgBmUQx9dg==",
+  "sign_type": "RSA",
+  "out_trade_no": "20240320123456789",
+  "inner_trade_no": "101165700776857695907",
+  "status": "TRANSFER_SUCCESS",
+  "amount": "15000.00"
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Regras de notificação:</strong> Até 7 tentativas nos intervalos [2, 10, 10, 60, 120, 360, 900] minutos. Responder com "success" em minúsculas para confirmar recebimento.</p>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Validações Importantes</h3>
+                    <ul class="response-note">
+                        <li><strong>IBAN:</strong> Deve começar com "AO06" e ter o formato válido para Angola</li>
+                        <li><strong>bank_account_name:</strong> Não pode conter números</li>
+                        <li><strong>amount:</strong> Máximo de 15 dígitos com 2 casas decimais</li>
+                        <li><strong>payer_identity:</strong> Deve ser um member ID válido da PAYPAY</li>
+                        <li><strong>Saldo:</strong> A conta do merchant deve ter saldo suficiente</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PAYPAY AO API</h4>
+                    <p>Solução completa de pagamentos digitais para Angola.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentação</h4>
+                    <ul>
+                        <li><a href="../index.html#quick-start">Guia de Integração</a></li>
+                        <li><a href="../index.html#endpoints">Referência da API</a></li>
+                        <li><a href="#" onclick="showToast('Exemplos disponíveis em breve!')">Exemplos de Código</a></li>
+                        <li><a href="#" onclick="showToast('Códigos de erro disponíveis em breve!')">Códigos de Erro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('FAQ disponível em breve!')">FAQ</a></li>
+                        <li><a href="#" onclick="showToast('Status do sistema: Online')">Status do Sistema</a></li>
+                        <li><a href="#" onclick="showToast('Changelog v1.0 - Lançamento')">Changelog</a></li>
+                        <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('Termos de uso disponíveis em breve!')">Termos de Uso</a></li>
+                        <li><a href="#" onclick="showToast('Política de privacidade disponível em breve!')">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="showToast('Segurança: RSA 1024 bits')">Segurança</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2021-2025 PAYPAY. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Inicializar tabs de exemplo
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.sample-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover active de todas as tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Adicionar active na tab clicada
+                    this.classList.add('active');
+                    
+                    // Esconder todos os conteúdos
+                    document.querySelectorAll('.sample-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Mostrar o conteúdo correspondente
+                    const contentId = this.getAttribute('data-content');
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

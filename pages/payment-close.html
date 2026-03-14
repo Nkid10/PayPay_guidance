@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST /payment/close - Fechar Pagamento</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <a href="../index.html" class="logo">PAYPAY AO <span>API v1.0</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="../index.html#endpoints">Endpoints</a></li>
+                    <li><a href="../index.html#quick-start">Docs</a></li>
+                    <li><a href="https://portal.paypayafrica.com" target="_blank">Portal</a></li>
+                    <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Início</a> > <a href="../index.html#endpoints">Endpoints</a> > Fechar Pagamento
+            </div>
+            <h1>Fechar Pagamento</h1>
+            <p>Fecha/cancela um pagamento pendente, impedindo que o cliente continue o processo</p>
+        </div>
+    </section>
+
+    <!-- Endpoint Detail -->
+    <section class="endpoint-detail">
+        <div class="container">
+            <div class="endpoint-info">
+                <div class="endpoint-header">
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-url">https://api.paypayafrica.com/v1/payment/close</span>
+                    <div class="endpoint-tags">
+                        <span class="endpoint-tag">Cancelamento</span>
+                        <span class="endpoint-tag">Fechamento</span>
+                        <span class="endpoint-tag">Gestão</span>
+                    </div>
+                </div>
+
+                <h2>Descrição</h2>
+                <p>Este endpoint permite fechar ou cancelar um pagamento que está pendente. Após o fechamento, o cliente não pode mais continuar ou finalizar o pagamento. Útil para quando o pedido expira, é cancelado pelo cliente, ou por qualquer outra razão o pagamento não deve mais ser processado.</p>
+
+                <h2>Parâmetros da Requisição</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>request_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Número único da requisição (alfanumérico e underline)</td>
+                            </tr>
+                            <tr>
+                                <td><code>service</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor fixo: "trade_close"</td>
+                            </tr>
+                            <tr>
+                                <td><code>version</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Versão da API: "1.0"</td>
+                            </tr>
+                            <tr>
+                                <td><code>partner_id</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(32)</td>
+                                <td>Número do merchant (obtido no portal)</td>
+                            </tr>
+                            <tr>
+                                <td><code>charset</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"UTF-8"</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor da assinatura RSA</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign_type</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"RSA"</td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(19)</td>
+                                <td>Formato "yyyy-MM-dd HH:mm:ss" (GMT+1)</td>
+                            </tr>
+                            <tr>
+                                <td><code>format</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"JSON"</td>
+                            </tr>
+                            <tr>
+                                <td><code>language</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"pt" ou "en"</td>
+                            </tr>
+                            <tr>
+                                <td><code>biz_content</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Conteúdo de negócio CRIPTOGRAFADO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Conteúdo de Negócio (biz_content)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>out_trade_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Número do pedido do merchant a ser fechado</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Exemplos de Código</h2>
+                <div class="code-samples">
+                    <div class="sample-tabs">
+                        <button class="sample-tab active" data-tab="curl" data-content="curl-sample">cURL</button>
+                        <button class="sample-tab" data-tab="javascript" data-content="js-sample">JavaScript</button>
+                        <button class="sample-tab" data-tab="python" data-content="py-sample">Python</button>
+                        <button class="sample-tab" data-tab="php" data-content="php-sample">PHP</button>
+                    </div>
+
+                    <div class="sample-content active" id="curl-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com cURL</span>
+                                <button class="copy-btn" data-target="curl-code">Copiar</button>
+                            </div>
+                            <pre id="curl-code">curl -X POST https://api.paypayafrica.com/v1/payment/close \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_no": "20240320123456789",
+    "service": "trade_close",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": "eyJvdXRfdHJhZGVfbm8iOiAiMjAyNDAzMjAxMjM0NTY3ODkifQ=="
+  }'</pre>
+                        </div>
+                        <p class="response-note">O <code>biz_content</code> é a versão em base64 de: <code>{"out_trade_no": "20240320123456789"}</code></p>
+                    </div>
+
+                    <div class="sample-content" id="js-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com JavaScript (Node.js)</span>
+                                <button class="copy-btn" data-target="js-code">Copiar</button>
+                            </div>
+                            <pre id="js-code">// Exemplo com JavaScript (Node.js)
+const crypto = require('crypto');
+
+// Dados do biz_content (antes da criptografia)
+const bizContent = {
+    out_trade_no: '20240320123456789'
+};
+
+// Função para criptografar (exemplo - use a biblioteca adequada)
+function encryptRSA(text, publicKey) {
+    // Implementar criptografia RSA com chave pública
+    // Por simplicidade, este exemplo apenas converte para base64
+    return Buffer.from(JSON.stringify(text)).toString('base64');
+}
+
+const encryptedBizContent = encryptRSA(bizContent);
+
+const requestData = {
+    request_no: '20240320123456789',
+    service: 'trade_close',
+    version: '1.0',
+    partner_id: '200001835716',
+    charset: 'UTF-8',
+    sign: 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    sign_type: 'RSA',
+    timestamp: '2024-03-20 14:30:00',
+    format: 'JSON',
+    language: 'pt',
+    biz_content: encryptedBizContent
+};
+
+fetch('https://api.paypayafrica.com/v1/payment/close', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData)
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Resposta:', data);
+    
+    if (data.code === 'S0001') {
+        // Decodificar biz_content da resposta
+        const responseBizContent = JSON.parse(Buffer.from(data.biz_content, 'base64').toString());
+        console.log('Pedido fechado:', responseBizContent.out_trade_no);
+        console.log('Número PAYPAY:', responseBizContent.trade_no);
+    }
+})
+.catch(error => console.error('Erro:', error));</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="py-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com Python</span>
+                                <button class="copy-btn" data-target="py-code">Copiar</button>
+                            </div>
+                            <pre id="py-code">import requests
+import json
+import base64
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+
+# Dados do biz_content
+biz_content = {
+    "out_trade_no": "20240320123456789"
+}
+
+# Função para criptografar (exemplo)
+def encrypt_biz_content(data):
+    # Implementar criptografia RSA com chave pública
+    # Por simplicidade, este exemplo apenas converte para base64
+    json_str = json.dumps(data)
+    return base64.b64encode(json_str.encode()).decode()
+
+# Requisição
+url = "https://api.paypayafrica.com/v1/payment/close"
+
+payload = {
+    "request_no": "20240320123456789",
+    "service": "trade_close",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": encrypt_biz_content(biz_content)
+}
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+try:
+    response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
+    
+    data = response.json()
+    print("Resposta:", json.dumps(data, indent=2))
+    
+    if data.get('code') == 'S0001':
+        # Decodificar resposta
+        response_biz = json.loads(base64.b64decode(data['biz_content']))
+        print(f"Pedido fechado: {response_biz['out_trade_no']}")
+        print(f"Trade No: {response_biz['trade_no']}")
+        
+except requests.exceptions.RequestException as e:
+    print(f"Erro na requisição: {e}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="php-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com PHP</span>
+                                <button class="copy-btn" data-target="php-code">Copiar</button>
+                            </div>
+                            <pre id="php-code">&lt;?php
+// Dados do biz_content
+$bizContent = [
+    'out_trade_no' => '20240320123456789'
+];
+
+// Função para criptografar (exemplo)
+function encryptBizContent($data) {
+    $json = json_encode($data);
+    return base64_encode($json);
+}
+
+$url = 'https://api.paypayafrica.com/v1/payment/close';
+
+$data = [
+    'request_no' => '20240320123456789',
+    'service' => 'trade_close',
+    'version' => '1.0',
+    'partner_id' => '200001835716',
+    'charset' => 'UTF-8',
+    'sign' => 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    'sign_type' => 'RSA',
+    'timestamp' => '2024-03-20 14:30:00',
+    'format' => 'JSON',
+    'language' => 'pt',
+    'biz_content' => encryptBizContent($bizContent)
+];
+
+$json_data = json_encode($data);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($json_data)
+]);
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if (curl_errno($ch)) {
+    echo 'Erro cURL: ' . curl_error($ch);
+} else {
+    echo "HTTP Code: $http_code\n";
+    $response_data = json_decode($response, true);
+    echo "Resposta: " . json_encode($response_data, JSON_PRETTY_PRINT) . "\n";
+    
+    if ($response_data['code'] == 'S0001') {
+        // Decodificar biz_content da resposta
+        $responseBiz = json_decode(base64_decode($response_data['biz_content']), true);
+        echo "Pedido fechado: " . $responseBiz['out_trade_no'] . "\n";
+        echo "Trade No: " . $responseBiz['trade_no'] . "\n";
+    }
+}
+
+curl_close($ch);
+?&gt;</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Resposta da API</h2>
+                
+                <div class="response-section">
+                    <h3 class="response-title">Resposta de Sucesso (3.5.3 Response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta da API (código S0001)</span>
+                            <button class="copy-btn" data-target="response-success">Copiar</button>
+                        </div>
+                        <pre id="response-success">{
+  "code": "S0001",
+  "sub_code": "S0001",
+  "msg": "success",
+  "sub_msg": "success",
+  "sign": "MSzYQpUVe7pX4/cCBAAq1cw6+HzGkcCIenhkFLVRFyqnlbNg0xhR177jtVrNoeuh9BiuHp6CjyX2xfhhFB+boU0jS1T0GHrd4jCv5U8IzCelxo40eqSC4nuvHa7d9l5hnQ+xMryGt2DERYBHoGznQw+U6yIt074iv2do4wtvt6YGjDp6NJJ0dV7RkE4xaM1OCwL7a+8mwUl5Eau5VSdZB8QPaT08/p8oenVzRMpTPzOEenZVOTadgJQ4H+r1HgBtnYBpvogpH/+B62pNnwnwSm0y5LEaYCx7YGyX+3BbnWqq6y0Zzz0QEeil4SUIj1BpU2AKBaMXLsvoMb/OFH21ew==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": "eyJvdXRfdHJhZGVfbm8iOiAiMjAyNDAzMjAxMjM0NTY3ODkiLCAidHJhZGVfbm8iOiAiMTAxMTY0MjY3OTA5MTk0MjY5ODgzIn0="
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Conteúdo de Negócio Decodificado (3.5.4 Business content of response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>biz_content após decodificação base64</span>
+                            <button class="copy-btn" data-target="bizcontent-decoded">Copiar</button>
+                        </div>
+                        <pre id="bizcontent-decoded">{
+  "out_trade_no": "20240320123456789",
+  "trade_no": "101164267909194269883"
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Descrição dos campos:</strong></p>
+                    <ul class="response-note">
+                        <li><code>out_trade_no</code>: Número do pedido do merchant que foi fechado</li>
+                        <li><code>trade_no</code>: Número da transação PAYPAY correspondente</li>
+                    </ul>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Exemplos de Erro</h3>
+                    
+                    <h4>Pedido Não Encontrado</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41124</span>
+                            <button class="copy-btn" data-target="error-notfound">Copiar</button>
+                        </div>
+                        <pre id="error-notfound">{
+  "code": "F41",
+  "sub_code": "F41124",
+  "msg": "Business processing failed",
+  "sub_msg": "The order does not exist",
+  "sign": "MSzYQpUVe7pX4/cCBAAq1cw6+HzGkcCIenhkFLVRFyqnlbNg0xhR177jtVrNoeuh9BiuHp6CjyX2xfhhFB+boU0jS1T0GHrd4jCv5U8IzCelxo40eqSC4nuvHa7d9l5hnQ+xMryGt2DERYBHoGznQw+U6yIt074iv2do4wtvt6YGjDp6NJJ0dV7RkE4xaM1OCwL7a+8mwUl5Eau5VSdZB8QPaT08/p8oenVzRMpTPzOEenZVOTadgJQ4H+r1HgBtnYBpvogpH/+B62pNnwnwSm0y5LEaYCx7YGyX+3BbnWqq6y0Zzz0QEeil4SUIj1BpU2AKBaMXLsvoMb/OFH21ew==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>Pedido Já Fechado</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41130</span>
+                            <button class="copy-btn" data-target="error-closed">Copiar</button>
+                        </div>
+                        <pre id="error-closed">{
+  "code": "F41",
+  "sub_code": "F41130",
+  "msg": "Business processing failed",
+  "sub_msg": "Transaction closed",
+  "sign": "MSzYQpUVe7pX4/cCBAAq1cw6+HzGkcCIenhkFLVRFyqnlbNg0xhR177jtVrNoeuh9BiuHp6CjyX2xfhhFB+boU0jS1T0GHrd4jCv5U8IzCelxo40eqSC4nuvHa7d9l5hnQ+xMryGt2DERYBHoGznQw+U6yIt074iv2do4wtvt6YGjDp6NJJ0dV7RkE4xaM1OCwL7a+8mwUl5Eau5VSdZB8QPaT08/p8oenVzRMpTPzOEenZVOTadgJQ4H+r1HgBtnYBpvogpH/+B62pNnwnwSm0y5LEaYCx7YGyX+3BbnWqq6y0Zzz0QEeil4SUIj1BpU2AKBaMXLsvoMb/OFH21ew==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>Pedido Já Pago</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41280</span>
+                            <button class="copy-btn" data-target="error-paid">Copiar</button>
+                        </div>
+                        <pre id="error-paid">{
+  "code": "F41",
+  "sub_code": "F41280",
+  "msg": "Business processing failed",
+  "sub_msg": "Order has been paid",
+  "sign": "MSzYQpUVe7pX4/cCBAAq1cw6+HzGkcCIenhkFLVRFyqnlbNg0xhR177jtVrNoeuh9BiuHp6CjyX2xfhhFB+boU0jS1T0GHrd4jCv5U8IzCelxo40eqSC4nuvHa7d9l5hnQ+xMryGt2DERYBHoGznQw+U6yIt074iv2do4wtvt6YGjDp6NJJ0dV7RkE4xaM1OCwL7a+8mwUl5Eau5VSdZB8QPaT08/p8oenVzRMpTPzOEenZVOTadgJQ4H+r1HgBtnYBpvogpH/+B62pNnwnwSm0y5LEaYCx7YGyX+3BbnWqq6y0Zzz0QEeil4SUIj1BpU2AKBaMXLsvoMb/OFH21ew==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Códigos de Status de Pagamento</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Descrição</th>
+                                    <th>Pode ser fechado?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>WAIT_BUYER_PAY</code></td>
+                                    <td>Pagamento criado, aguardando pagamento</td>
+                                    <td>✅ Sim</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TRADE_CLOSED</code></td>
+                                    <td>Pagamento já fechado</td>
+                                    <td>❌ Não</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TRADE_SUCCESS</code></td>
+                                    <td>Pagamento bem-sucedido</td>
+                                    <td>❌ Não</td>
+                                </tr>
+                                <tr>
+                                    <td><code>TRADE_FINISHED</code></td>
+                                    <td>Pagamento finalizado/liquidado</td>
+                                    <td>❌ Não</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Casos de Uso</h3>
+                    <ul class="response-note">
+                        <li><strong>Expiração de pedido:</strong> Quando o tempo limite do pedido é atingido</li>
+                        <li><strong>Cancelamento pelo cliente:</strong> Cliente desiste da compra antes de pagar</li>
+                        <li><strong>Estoque indisponível:</strong> Produto ficou indisponível durante o processo</li>
+                        <li><strong>Fraude suspeita:</strong> Suspeita de atividade fraudulenta no pedido</li>
+                        <li><strong>Erro no pedido:</strong> Dados do pedido estão incorretos</li>
+                    </ul>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Notas Importantes</h3>
+                    <ul class="response-note">
+                        <li>⚠️ Apenas pedidos com status <code>WAIT_BUYER_PAY</code> podem ser fechados</li>
+                        <li>⚠️ O fechamento é irreversível - após fechado, o pedido não pode ser reaberto</li>
+                        <li>⏱️ O pedido também pode ser fechado automaticamente após o <code>timeout_express</code></li>
+                        <li>📝 O <code>request_no</code> deve ser único para cada requisição de fechamento</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PAYPAY AO API</h4>
+                    <p>Solução completa de pagamentos digitais para Angola.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentação</h4>
+                    <ul>
+                        <li><a href="../index.html#quick-start">Guia de Integração</a></li>
+                        <li><a href="../index.html#endpoints">Referência da API</a></li>
+                        <li><a href="#" onclick="showToast('Exemplos disponíveis em breve!')">Exemplos de Código</a></li>
+                        <li><a href="#" onclick="showToast('Códigos de erro disponíveis em breve!')">Códigos de Erro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('FAQ disponível em breve!')">FAQ</a></li>
+                        <li><a href="#" onclick="showToast('Status do sistema: Online')">Status do Sistema</a></li>
+                        <li><a href="#" onclick="showToast('Changelog v1.0 - Lançamento')">Changelog</a></li>
+                        <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('Termos de uso disponíveis em breve!')">Termos de Uso</a></li>
+                        <li><a href="#" onclick="showToast('Política de privacidade disponível em breve!')">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="showToast('Segurança: RSA 1024 bits')">Segurança</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2021-2025 PAYPAY. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Inicializar tabs de exemplo
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.sample-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover active de todas as tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Adicionar active na tab clicada
+                    this.classList.add('active');
+                    
+                    // Esconder todos os conteúdos
+                    document.querySelectorAll('.sample-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Mostrar o conteúdo correspondente
+                    const contentId = this.getAttribute('data-content');
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

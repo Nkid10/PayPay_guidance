@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POST /refund - Reembolso de Pagamento</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container header-content">
+            <a href="../index.html" class="logo">PAYPAY AO <span>API v1.0</span></a>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="../index.html">Início</a></li>
+                    <li><a href="../index.html#endpoints">Endpoints</a></li>
+                    <li><a href="../index.html#quick-start">Docs</a></li>
+                    <li><a href="https://portal.paypayafrica.com" target="_blank">Portal</a></li>
+                    <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="../index.html">Início</a> > <a href="../index.html#endpoints">Endpoints</a> > Reembolso
+            </div>
+            <h1>Reembolso de Pagamento</h1>
+            <p>Solicita reembolso total ou parcial de uma transação (até 180 dias)</p>
+        </div>
+    </section>
+
+    <!-- Endpoint Detail -->
+    <section class="endpoint-detail">
+        <div class="container">
+            <div class="endpoint-info">
+                <div class="endpoint-header">
+                    <span class="endpoint-method method-post">POST</span>
+                    <span class="endpoint-url">https://api.paypayafrica.com/v1/refund</span>
+                    <div class="endpoint-tags">
+                        <span class="endpoint-tag">180 dias</span>
+                        <span class="endpoint-tag">Total/Parcial</span>
+                        <span class="endpoint-tag">Reembolso</span>
+                    </div>
+                </div>
+
+                <h2>Descrição</h2>
+                <p>Este endpoint permite solicitar reembolsos de transações. Suporta reembolsos totais ou parciais, com prazo máximo de 180 dias após a data da transação original. O status do reembolso pode ser consultado via API de consulta ou através de notificações assíncronas.</p>
+
+                <h2>Parâmetros da Requisição</h2>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>request_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Número único da requisição (alfanumérico e underline)</td>
+                            </tr>
+                            <tr>
+                                <td><code>service</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor fixo: "trade_refund"</td>
+                            </tr>
+                            <tr>
+                                <td><code>version</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Versão da API: "1.0"</td>
+                            </tr>
+                            <tr>
+                                <td><code>partner_id</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(32)</td>
+                                <td>Número do merchant (obtido no portal)</td>
+                            </tr>
+                            <tr>
+                                <td><code>charset</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"UTF-8"</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Valor da assinatura RSA</td>
+                            </tr>
+                            <tr>
+                                <td><code>sign_type</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"RSA"</td>
+                            </tr>
+                            <tr>
+                                <td><code>timestamp</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(19)</td>
+                                <td>Formato "yyyy-MM-dd HH:mm:ss" (GMT+1)</td>
+                            </tr>
+                            <tr>
+                                <td><code>format</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"JSON"</td>
+                            </tr>
+                            <tr>
+                                <td><code>language</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>"pt" ou "en"</td>
+                            </tr>
+                            <tr>
+                                <td><code>biz_content</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String</td>
+                                <td>Conteúdo de negócio CRIPTOGRAFADO</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Conteúdo de Negócio (biz_content)</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Parâmetro</th>
+                                <th>Obrig.</th>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>orig_out_trade_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(32)</td>
+                                <td>Número do pedido original a ser reembolsado</td>
+                            </tr>
+                            <tr>
+                                <td><code>out_trade_no</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(6,32)</td>
+                                <td>Novo número para o pedido de reembolso (deve ser único)</td>
+                            </tr>
+                            <tr>
+                                <td><code>refund_amount</code></td>
+                                <td><span class="required">Sim</span></td>
+                                <td>String(15)</td>
+                                <td>Valor a ser reembolsado (máx. 2 casas decimais)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h2>Exemplos de Código</h2>
+                <div class="code-samples">
+                    <div class="sample-tabs">
+                        <button class="sample-tab active" data-tab="curl" data-content="curl-sample">cURL</button>
+                        <button class="sample-tab" data-tab="javascript" data-content="js-sample">JavaScript</button>
+                        <button class="sample-tab" data-tab="python" data-content="py-sample">Python</button>
+                        <button class="sample-tab" data-tab="php" data-content="php-sample">PHP</button>
+                    </div>
+
+                    <div class="sample-content active" id="curl-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com cURL</span>
+                                <button class="copy-btn" data-target="curl-code">Copiar</button>
+                            </div>
+                            <pre id="curl-code">curl -X POST https://api.paypayafrica.com/v1/refund \
+  -H "Content-Type: application/json" \
+  -d '{
+    "request_no": "20240320123456789",
+    "service": "trade_refund",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": "eyJvcmlnX291dF90cmFkZV9ubyI6ICIyMDI0MDMyMDEyMzQ1Njc4OSIsICJvdXRfdHJhZGVfbm8iOiAiMjAyNDAzMjAxMjM0NTY3ODlyZWYxIiwgInJlZnVuZF9hbW91bnQiOiAiNTAuMDAifQ=="
+  }'</pre>
+                        </div>
+                        <p class="response-note">O <code>biz_content</code> é a versão em base64 de: <code>{"orig_out_trade_no": "20240320123456789", "out_trade_no": "20240320123456789ref1", "refund_amount": "50.00"}</code></p>
+                    </div>
+
+                    <div class="sample-content" id="js-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com JavaScript (Node.js)</span>
+                                <button class="copy-btn" data-target="js-code">Copiar</button>
+                            </div>
+                            <pre id="js-code">// Exemplo com JavaScript (Node.js)
+const crypto = require('crypto');
+
+// Dados do biz_content (antes da criptografia)
+const bizContent = {
+    orig_out_trade_no: '20240320123456789',
+    out_trade_no: '20240320123456789ref1',
+    refund_amount: '50.00'
+};
+
+// Função para criptografar (exemplo - use a biblioteca adequada)
+function encryptRSA(text, publicKey) {
+    // Implementar criptografia RSA com chave pública
+    // Por simplicidade, este exemplo apenas converte para base64
+    return Buffer.from(JSON.stringify(text)).toString('base64');
+}
+
+const encryptedBizContent = encryptRSA(bizContent);
+
+const requestData = {
+    request_no: '20240320123456789',
+    service: 'trade_refund',
+    version: '1.0',
+    partner_id: '200001835716',
+    charset: 'UTF-8',
+    sign: 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    sign_type: 'RSA',
+    timestamp: '2024-03-20 14:30:00',
+    format: 'JSON',
+    language: 'pt',
+    biz_content: encryptedBizContent
+};
+
+fetch('https://api.paypayafrica.com/v1/refund', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(requestData)
+})
+.then(response => response.json())
+.then(data => {
+    console.log('Resposta:', data);
+    
+    if (data.code === 'S0001') {
+        // Decodificar biz_content da resposta
+        const responseBizContent = JSON.parse(Buffer.from(data.biz_content, 'base64').toString());
+        console.log('Status do reembolso:', responseBizContent.status);
+        console.log('Número do reembolso:', responseBizContent.trade_no);
+        
+        if (responseBizContent.status === 'S') {
+            console.log('✅ Reembolso processado com sucesso!');
+        } else if (responseBizContent.status === 'P') {
+            console.log('⏳ Reembolso em processamento...');
+        }
+    }
+})
+.catch(error => console.error('Erro:', error));</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="py-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com Python</span>
+                                <button class="copy-btn" data-target="py-code">Copiar</button>
+                            </div>
+                            <pre id="py-code">import requests
+import json
+import base64
+from Crypto.PublicKey import RSA
+from Crypto.Cipher import PKCS1_v1_5
+
+# Dados do biz_content
+biz_content = {
+    "orig_out_trade_no": "20240320123456789",
+    "out_trade_no": "20240320123456789ref1",
+    "refund_amount": "50.00"
+}
+
+# Função para criptografar (exemplo)
+def encrypt_biz_content(data):
+    # Implementar criptografia RSA com chave pública
+    # Por simplicidade, este exemplo apenas converte para base64
+    json_str = json.dumps(data)
+    return base64.b64encode(json_str.encode()).decode()
+
+# Requisição
+url = "https://api.paypayafrica.com/v1/refund"
+
+payload = {
+    "request_no": "20240320123456789",
+    "service": "trade_refund",
+    "version": "1.0",
+    "partner_id": "200001835716",
+    "charset": "UTF-8",
+    "sign": "N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...",
+    "sign_type": "RSA",
+    "timestamp": "2024-03-20 14:30:00",
+    "format": "JSON",
+    "language": "pt",
+    "biz_content": encrypt_biz_content(biz_content)
+}
+
+headers = {
+    'Content-Type': 'application/json'
+}
+
+try:
+    response = requests.post(url, headers=headers, json=payload)
+    response.raise_for_status()
+    
+    data = response.json()
+    print("Resposta:", json.dumps(data, indent=2))
+    
+    if data.get('code') == 'S0001':
+        # Decodificar resposta
+        response_biz = json.loads(base64.b64decode(data['biz_content']))
+        print(f"Status do reembolso: {response_biz['status']}")
+        print(f"Número do reembolso: {response_biz['trade_no']}")
+        
+        if response_biz['status'] == 'S':
+            print("✅ Reembolso processado com sucesso!")
+        elif response_biz['status'] == 'P':
+            print("⏳ Reembolso em processamento...")
+        
+except requests.exceptions.RequestException as e:
+    print(f"Erro na requisição: {e}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="sample-content" id="php-sample">
+                        <div class="code-block">
+                            <div class="code-header">
+                                <span>Exemplo com PHP</span>
+                                <button class="copy-btn" data-target="php-code">Copiar</button>
+                            </div>
+                            <pre id="php-code">&lt;?php
+// Dados do biz_content
+$bizContent = [
+    'orig_out_trade_no' => '20240320123456789',
+    'out_trade_no' => '20240320123456789ref1',
+    'refund_amount' => '50.00'
+];
+
+// Função para criptografar (exemplo)
+function encryptBizContent($data) {
+    $json = json_encode($data);
+    return base64_encode($json);
+}
+
+$url = 'https://api.paypayafrica.com/v1/refund';
+
+$data = [
+    'request_no' => '20240320123456789',
+    'service' => 'trade_refund',
+    'version' => '1.0',
+    'partner_id' => '200001835716',
+    'charset' => 'UTF-8',
+    'sign' => 'N6EPWFhOOiqP7PfgEWgffszU6SCMUimc4pQv4XL...',
+    'sign_type' => 'RSA',
+    'timestamp' => '2024-03-20 14:30:00',
+    'format' => 'JSON',
+    'language' => 'pt',
+    'biz_content' => encryptBizContent($bizContent)
+];
+
+$json_data = json_encode($data);
+
+$ch = curl_init($url);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
+curl_setopt($ch, CURLOPT_POSTFIELDS, $json_data);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    'Content-Type: application/json',
+    'Content-Length: ' . strlen($json_data)
+]);
+
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+if (curl_errno($ch)) {
+    echo 'Erro cURL: ' . curl_error($ch);
+} else {
+    echo "HTTP Code: $http_code\n";
+    $response_data = json_decode($response, true);
+    echo "Resposta: " . json_encode($response_data, JSON_PRETTY_PRINT) . "\n";
+    
+    if ($response_data['code'] == 'S0001') {
+        // Decodificar biz_content da resposta
+        $responseBiz = json_decode(base64_decode($response_data['biz_content']), true);
+        echo "Status do reembolso: " . $responseBiz['status'] . "\n";
+        echo "Número do reembolso: " . $responseBiz['trade_no'] . "\n";
+        
+        if ($responseBiz['status'] == 'S') {
+            echo "✅ Reembolso processado com sucesso!\n";
+        } elseif ($responseBiz['status'] == 'P') {
+            echo "⏳ Reembolso em processamento...\n";
+        }
+    }
+}
+
+curl_close($ch);
+?&gt;</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Resposta da API</h2>
+                
+                <div class="response-section">
+                    <h3 class="response-title">Resposta de Sucesso (3.4.3 Response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta da API (código S0001)</span>
+                            <button class="copy-btn" data-target="response-success">Copiar</button>
+                        </div>
+                        <pre id="response-success">{
+  "code": "S0001",
+  "sub_code": "S0001",
+  "msg": "success",
+  "sub_msg": "success",
+  "sign": "tlk1v6K+umJCQyOiKsRt7dZL6UNszjgx+8xd6nRv7PBW8L+VGu818mlCrNl32n0qbmb+QF8HSYvVLzX/zyh0+9/5HRTfxDmUDSgDTkmNsiDzHaOuQgmRWVKQit0oJONVjghuPgR38dpC/seLaq5DHYxPbebXS3kPAHsi4qqxaaPJoMzehrh1MiHcWdkHeeSMNf5srFLrfHCgJekEBLMD+6U4rJAUL+ZOx3u9PP4JvW4eMk60Px3UkYKqBLWPoWIDpOeEKAo2beRsXa/puCKK71UVfnN3ZMGaGCsQoalwKCiHhIbJOYB3W2ItHqv7ZTYZafdUNs99gHoEBxgD49EG0Q==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": "eyJvdXRfdHJhZGVfbm8iOiAiMjAyNDAzMjAxMjM0NTY3ODlyZWYxIiwgInRyYWRlX25vIjogIjEwMzE2NDI2Nzk5NjUwNzc2OTg4NCIsICJzdGF0dXMiOiAiUCJ9"
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Conteúdo de Negócio Decodificado (3.4.4 Business content of response)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>biz_content após decodificação base64</span>
+                            <button class="copy-btn" data-target="bizcontent-decoded">Copiar</button>
+                        </div>
+                        <pre id="bizcontent-decoded">{
+  "out_trade_no": "20240320123456789ref1",
+  "trade_no": "103164267996507769884",
+  "status": "P"
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Descrição dos campos:</strong></p>
+                    <ul class="response-note">
+                        <li><code>out_trade_no</code>: Número do pedido de reembolso</li>
+                        <li><code>trade_no</code>: Número da transação de reembolso PAYPAY</li>
+                        <li><code>status</code>: Status do reembolso (S-Sucesso, P-Processando, F-Falha)</li>
+                    </ul>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Exemplos de Erro</h3>
+                    
+                    <h4>Valor de Reembolso Excede o Permitido</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41115</span>
+                            <button class="copy-btn" data-target="error-amount">Copiar</button>
+                        </div>
+                        <pre id="error-amount">{
+  "code": "F41",
+  "sub_code": "F41115",
+  "msg": "Business processing failed",
+  "sub_msg": "Exceeded maximum refundable amount, maximum refund able amount: 100.00",
+  "sign": "tlk1v6K+umJCQyOiKsRt7dZL6UNszjgx+8xd6nRv7PBW8L+VGu818mlCrNl32n0qbmb+QF8HSYvVLzX/zyh0+9/5HRTfxDmUDSgDTkmNsiDzHaOuQgmRWVKQit0oJONVjghuPgR38dpC/seLaq5DHYxPbebXS3kPAHsi4qqxaaPJoMzehrh1MiHcWdkHeeSMNf5srFLrfHCgJekEBLMD+6U4rJAUL+ZOx3u9PP4JvW4eMk60Px3UkYKqBLWPoWIDpOeEKAo2beRsXa/puCKK71UVfnN3ZMGaGCsQoalwKCiHhIbJOYB3W2ItHqv7ZTYZafdUNs99gHoEBxgD49EG0Q==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>Prazo de Reembolso Expirado</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41416</span>
+                            <button class="copy-btn" data-target="error-expired">Copiar</button>
+                        </div>
+                        <pre id="error-expired">{
+  "code": "F41",
+  "sub_code": "F41416",
+  "msg": "Business processing failed",
+  "sub_msg": "This order is no longer refundable",
+  "sign": "tlk1v6K+umJCQyOiKsRt7dZL6UNszjgx+8xd6nRv7PBW8L+VGu818mlCrNl32n0qbmb+QF8HSYvVLzX/zyh0+9/5HRTfxDmUDSgDTkmNsiDzHaOuQgmRWVKQit0oJONVjghuPgR38dpC/seLaq5DHYxPbebXS3kPAHsi4qqxaaPJoMzehrh1MiHcWdkHeeSMNf5srFLrfHCgJekEBLMD+6U4rJAUL+ZOx3u9PP4JvW4eMk60Px3UkYKqBLWPoWIDpOeEKAo2beRsXa/puCKK71UVfnN3ZMGaGCsQoalwKCiHhIbJOYB3W2ItHqv7ZTYZafdUNs99gHoEBxgD49EG0Q==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+
+                    <h4>Reembolso Já Solicitado</h4>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Resposta com erro F41264</span>
+                            <button class="copy-btn" data-target="error-duplicate">Copiar</button>
+                        </div>
+                        <pre id="error-duplicate">{
+  "code": "F41",
+  "sub_code": "F41264",
+  "msg": "Business processing failed",
+  "sub_msg": "Refund request record already exists",
+  "sign": "tlk1v6K+umJCQyOiKsRt7dZL6UNszjgx+8xd6nRv7PBW8L+VGu818mlCrNl32n0qbmb+QF8HSYvVLzX/zyh0+9/5HRTfxDmUDSgDTkmNsiDzHaOuQgmRWVKQit0oJONVjghuPgR38dpC/seLaq5DHYxPbebXS3kPAHsi4qqxaaPJoMzehrh1MiHcWdkHeeSMNf5srFLrfHCgJekEBLMD+6U4rJAUL+ZOx3u9PP4JvW4eMk60Px3UkYKqBLWPoWIDpOeEKAo2beRsXa/puCKK71UVfnN3ZMGaGCsQoalwKCiHhIbJOYB3W2ItHqv7ZTYZafdUNs99gHoEBxgD49EG0Q==",
+  "charset": "UTF-8",
+  "sign_type": "RSA",
+  "biz_content": ""
+}</pre>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Status de Reembolso</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Status</th>
+                                    <th>Descrição</th>
+                                    <th>Próximos Passos</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>S</code></td>
+                                    <td>Reembolso bem-sucedido (REFUND_SUCCESS)</td>
+                                    <td>Registrar estorno no sistema do merchant</td>
+                                </tr>
+                                <tr>
+                                    <td><code>P</code></td>
+                                    <td>Reembolso em processamento</td>
+                                    <td>Aguardar notificação ou consultar status</td>
+                                </tr>
+                                <tr>
+                                    <td><code>F</code></td>
+                                    <td>Falha no reembolso (REFUND_FAIL)</td>
+                                    <td>Verificar motivo e retentar se possível</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">Exemplo de Notificação Assíncrona (Webhook)</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Payload do webhook (quando o reembolso é processado)</span>
+                            <button class="copy-btn" data-target="webhook-sample">Copiar</button>
+                        </div>
+                        <pre id="webhook-sample">{
+  "notify_id": "a146a25b97b14399a20acfe24bfccaaa",
+  "notify_type": "trade_status_sync",
+  "notify_create": "1642673913264",
+  "input_charset": "UTF-8",
+  "sign": "jlDVUZsllFqa5LxXwQncGy/YkpulP6sV2qZCpId5zmM5NjC55W26ErQWxsY4kT4RHAf2Z5tGBItDMrkLjZWrtclLyGNaJ/tVKImzIncIEKqXqiP5F2SbaRo/q0t8z1CRvAJ89dIaHcbO9dqR1ADEidXysy1lhxTW4TKM3qsaimr0GcTcaeZo1X5rA7Q2QdfaDm3DCcCU8cHl84ELvkJPPuaMbENN7ouNJvoQqfWWKMHyfebOygcT624GeHE4O3hXioP2dm7AJfLWUEoZPkpIe8jvZ52N50eMdzIRd6GbFATos3ouWA56su/ZrguiTVUrXQYxpgBmUQx9dg==",
+  "sign_type": "RSA",
+  "out_trade_no": "20240320123456789ref1",
+  "inner_trade_no": "103164267996507769884",
+  "orig_out_trade_no": "20240320123456789",
+  "status": "REFUND_SUCCESS",
+  "amount": "50.00"
+}</pre>
+                    </div>
+                    <p class="response-note"><strong>Regras de notificação:</strong> Até 7 tentativas nos intervalos [2, 10, 10, 60, 120, 360, 900] minutos. Responder com "success" em minúsculas para confirmar recebimento.</p>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">⚠️ Regras de Reembolso</h3>
+                    <ul class="response-note">
+                        <li><strong>Reembolsos podem ser totais ou parciais</strong> - O valor não pode exceder o valor original</li>
+                        <li><strong>Prazo máximo:</strong> 180 dias após a transação original</li>
+                        <li><strong>out_trade_no único:</strong> Cada solicitação de reembolso deve ter um número de pedido único</li>
+                        <li><strong>Status final:</strong> Deve ser confirmado via consulta ou notificação assíncrona</li>
+                        <li><strong>Reembolsos parciais:</strong> Múltiplos reembolsos parciais são permitidos, desde que não excedam o valor total</li>
+                    </ul>
+                </div>
+
+                <div class="response-section">
+                    <h3 class="response-title">📋 Exemplo de Fluxo de Reembolso</h3>
+                    <div class="code-block response-block">
+                        <div class="code-header">
+                            <span>Pseudocódigo para processo de reembolso</span>
+                            <button class="copy-btn" data-target="flow-example">Copiar</button>
+                        </div>
+                        <pre id="flow-example">// Função para processar reembolso
+async function processarReembolso(pedidoOriginal, valor) {
+    // 1. Gerar número único para o reembolso
+    const refundNumber = `${pedidoOriginal}ref${Date.now()}`;
+    
+    // 2. Preparar biz_content
+    const bizContent = {
+        orig_out_trade_no: pedidoOriginal,
+        out_trade_no: refundNumber,
+        refund_amount: valor
+    };
+    
+    // 3. Encriptar e enviar requisição
+    const resposta = await solicitarReembolso(bizContent);
+    
+    if (resposta.code === 'S0001') {
+        // 4. Aguardar processamento (polling ou webhook)
+        const statusFinal = await aguardarConfirmacao(refundNumber);
+        
+        if (statusFinal === 'S') {
+            return { sucesso: true, mensagem: 'Reembolso concluído' };
+        } else {
+            return { sucesso: false, mensagem: 'Falha no reembolso' };
+        }
+    }
+    
+    return { sucesso: false, mensagem: resposta.sub_msg };
+}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>PAYPAY AO API</h4>
+                    <p>Solução completa de pagamentos digitais para Angola.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Documentação</h4>
+                    <ul>
+                        <li><a href="../index.html#quick-start">Guia de Integração</a></li>
+                        <li><a href="../index.html#endpoints">Referência da API</a></li>
+                        <li><a href="#" onclick="showToast('Exemplos disponíveis em breve!')">Exemplos de Código</a></li>
+                        <li><a href="#" onclick="showToast('Códigos de erro disponíveis em breve!')">Códigos de Erro</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Recursos</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('FAQ disponível em breve!')">FAQ</a></li>
+                        <li><a href="#" onclick="showToast('Status do sistema: Online')">Status do Sistema</a></li>
+                        <li><a href="#" onclick="showToast('Changelog v1.0 - Lançamento')">Changelog</a></li>
+                        <li><a href="#" onclick="showToast('Suporte: tech@paypayafrica.com')">Suporte</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#" onclick="showToast('Termos de uso disponíveis em breve!')">Termos de Uso</a></li>
+                        <li><a href="#" onclick="showToast('Política de privacidade disponível em breve!')">Política de Privacidade</a></li>
+                        <li><a href="#" onclick="showToast('Segurança: RSA 1024 bits')">Segurança</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2021-2025 PAYPAY. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/main.js"></script>
+    <script>
+        // Inicializar tabs de exemplo
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.sample-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover active de todas as tabs
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // Adicionar active na tab clicada
+                    this.classList.add('active');
+                    
+                    // Esconder todos os conteúdos
+                    document.querySelectorAll('.sample-content').forEach(content => {
+                        content.classList.remove('active');
+                    });
+                    
+                    // Mostrar o conteúdo correspondente
+                    const contentId = this.getAttribute('data-content');
+                    document.getElementById(contentId).classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
