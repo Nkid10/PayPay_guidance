@@ -40,3 +40,20 @@ Acesse a documentação online: [https://paypay-ao-api.netlify.app](https://payp
 - **Fontes**: Sistema nativo (SF Pro, Segoe UI, Roboto)
 
 ## 📁 Estrutura do Projeto
+
+paypay-ao-api/
+│
+├── index.html # Página principal
+├── css/
+│ └── style.css # Estilos completos
+├── js/
+│ └── main.js # Funcionalidades interativas
+└── pages/ # Páginas individuais dos endpoints
+├── payment-app.html
+├── payment-multicaixa.html
+├── payment-reference.html
+├── refund.html
+├── payment-close.html
+├── query-status.html
+├── transfer-bank.html
+└── transfer-account.html
